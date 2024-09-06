@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap')
+
+*,
+*::after,
+*::before
+  box-sizing: border-box
+  padding: 0
+  margin: 0
+
+body
+  padding: 20px 0
+  font-family: "Inter", sans-serif !important
+  font-style: normal
+  font-weight: 500
+  color: rgba(0, 0, 0, 0.88)
+  scroll-behavior: smooth
+  background: #F0F1F3
+
+.orange
+  color: #E19133
+
+.green
+  color: #0ACF83
+
+.red
+  color: #F36960
+
+.blue
+  color: #1570EF
+
+.MuiInputPhone input
+  width: 100%
+  padding: 6px 12px !important
+  border-radius: 6px !important
+  border: 1px solid rgb(205, 215, 225) !important
+
+.container
+  width: calc( 100% - 40px )
+  margin: 0 auto
+  background: #ffffff
+  padding: 15px
+  border-radius: 8px
+
+header
+  width: 100%
+  display: flex
+  justify-content: center
+  align-items: center
+  margin-bottom: 20px
+  .container
+    display: flex
+    justify-content: space-between
+    align-items: center
+    .searchAndMonitoring
+      display: flex
+      align-items: center
+      gap: 10px
+    .monitoringBtn
+      display: flex
+      justify-content: center
+      align-items: center
+      button
+        border: none
+        padding: 9px 18px
+        border-radius: 6px
+        background: #1570EF
+        color: #ffffff
+        font-size: 14px
+        font-weight: 500
+        cursor: pointer
+        transition: all 0.3s ease
+        &:hover
+          background: #0f5bd0
+    .search
+      display: flex
+      justify-content: flex-start
+      align-items: center
+      position: relative
+      width: 100%
+      input
+        max-width: 500px
+        width: 100%
+        padding: 8px 37px
+        border-radius: 6px
+        border: 1px solid rgb(205, 215, 225)
+        margin-right: 10px
+        font-size: 14px
+        font-family: "Inter", sans-serif
+      svg
+        width: 20px
+        height: 20px
+        position: absolute
+        left: 10px
+        top: 50%
+        transform: translateY(-50%)
+        color: rgba(0, 0, 0, 0.54)
+    img
+      width: 150px
+
+.general
+  width: 100%
+  margin-bottom: 20px
+  .container
+    padding: 15px
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+    justify-content: flex-start
+    .generalHeading
+      width: 100%
+      display: flex
+      justify-content: space-between
+      align-items: center
+      margin-bottom: 20px
+      h2
+        font-size: 18px
+        font-weight: 600
+      button
+        border: none
+        padding: 8px 18px
+        border-radius: 6px
+        background: #E19133
+        color: #ffffff
+        font-size: 14px
+        font-weight: 500
+        cursor: pointer
+        transition: all 0.3s ease
+        &:hover
+          background: #cf822a
+    .generalInfo
+      display: flex
+      justify-content: space-between
+      align-items: stretch
+      width: 100%
+      gap: 10px
+      flex-wrap: wrap
+      .infoCol
+        flex-grow: 1
+        flex-basis: calc(25% - 10px)
+        display: flex
+        flex-direction: column
+        align-items: flex-start
+        justify-content: flex-start
+        padding: 15px
+        border-radius: 8px
+        background: #f5f5f5
+        gap: 10px
+        h3
+          font-size: 14px
+          font-weight: 500
+        p
+          font-size: 14px
+          font-weight: 600
+          color: rgba(0, 0, 0, 0.88)

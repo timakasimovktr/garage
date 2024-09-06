@@ -1,0 +1,223 @@
+.tableCars
+  width: 100%
+  .container
+    .tableHeading
+      display: flex
+      justify-content: space-between
+      align-items: center
+      margin-bottom: 20px
+      h2
+        font-size: 20px
+        font-weight: 600
+      button
+        border: none
+        padding: 8px 18px
+        border-radius: 6px
+        background: #E19133
+        color: #ffffff
+        font-size: 16px
+        font-weight: 500
+        cursor: pointer
+        transition: all 0.3s ease
+        &:hover
+          background: #cf822a
+    .tableBody
+      width: 100%
+      display: flex
+      flex-direction: column
+      align-items: flex-start
+      justify-content: flex-start
+
+      .tableTh
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
+        padding: 15px
+        background: #f5f5f5
+        border-radius: 8px
+        .tableThItem
+          display: flex
+          justify-content: center
+          align-items: center
+          flex: 1
+          font-size: 14px
+          font-weight: 600
+          color: rgba(0, 0, 0, 0.88)
+          gap: 5px
+          svg
+            width: 20px
+            height: 20px
+          p
+            font-size: 14px
+            font-weight: 500
+            padding-top: 1px
+            white-space: nowrap
+          &:first-child
+            justify-content: flex-start
+          &:last-child
+            flex: 0.5
+
+      .tableTr
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
+        padding: 10px 15px
+        background: #ffffff
+        border-radius: 8px
+        border-bottom: 1px solid #f5f5f5
+        .tableTd
+          display: flex
+          justify-content: center
+          align-items: center
+          flex: 1
+          font-size: 14px
+          font-weight: 600
+          color: rgba(0, 0, 0, 0.88)
+          gap: 5px
+          .status
+            display: flex
+            justify-content: center
+            align-items: center
+            padding: 8px
+            border-radius: 6px
+            font-size: 14px
+            font-weight: 500
+            color: #ffffff
+            &.paid
+              background: #0ACF83
+            &.unpaid
+              background: #F36960
+            &.inProgress
+              background: #1570EF
+            &.pledge
+              background: #7a7a7a
+          button
+            border: none
+            display: flex
+            justify-content: center
+            align-items: center
+            padding: 8px
+            border-radius: 6px
+            cursor: pointer
+            transition: all 0.3s ease
+            &.changeBtn
+              background: #14ADD6
+              &:hover
+                background: #1398bd
+            &.deleteBtn
+              background: #F36960
+              &:hover
+                background: #e35b4b
+          svg
+            width: 16px
+            height: 16px
+            fill: #fff
+          p
+            font-size: 14px
+            font-weight: 500
+            padding-top: 1px
+          &:first-child
+            justify-content: flex-start
+          &:last-child
+            flex: 0.5
+        &:hover
+          background: #f5f5f5
+
+.exitModal
+  padding: 20px
+  form
+    display: flex
+    gap: 20px
+    .leftCreateRentModal, .rightCreateRentModal
+      display: flex
+      flex-direction: column
+      align-items: flex-start
+      .modalItem
+        width: 100%
+        display: flex
+        flex-direction: column
+        align-items: flex-start
+        justify-content: flex-start
+        &:last-child
+          margin-bottom: 0px
+        label
+          font-size: 16px
+          font-weight: 500
+          margin-bottom: 10px
+        input
+          width: 300px
+          height: 42px
+          padding: 10px
+          border-radius: 6px
+          border: 1px solid rgb(205, 215, 225)
+          margin-bottom: 10px
+          font-size: 16px
+          font-family: "Inter", sans-serif
+          &:last-child
+            margin-bottom: 0px
+          &[type="date"]
+            max-height: 42px !important
+
+        textarea
+          width: 300px
+          padding: 10px
+          border-radius: 6px
+          border: 1px solid rgb(205, 215, 225)
+          margin-bottom: 10px
+          font-size: 16px
+          font-family: "Inter", sans-serif
+          &:last-child
+            margin-bottom: 0px
+
+        select
+          max-width: 300px
+          width: 300px
+          height: 42px
+          padding: 10px
+          border-radius: 6px
+          border: 1px solid rgb(205, 215, 225)
+          margin-bottom: 10px
+          font-size: 16px
+          font-family: "Inter", sans-serif
+          &:last-child
+            margin-bottom: 0px
+
+        .checboxModal
+          display: flex
+          flex-direction: row
+          align-items: center
+          justify-content: flex-start
+          margin-bottom: 15px
+          gap: 5px
+          input
+            width: 20px
+            height: 20px
+            accent-color: #E19133
+            margin-bottom: 0
+          label
+            margin-bottom: 0
+        .actionsModal
+          display: flex
+          gap: 10px
+          width: 100%
+          button
+            width: 100%
+            border: none
+            padding: 10px 18px
+            border-radius: 6px
+            color: #ffffff
+            font-size: 16px
+            font-weight: 500
+            cursor: pointer
+            transition: all 0.3s ease
+            &:last-child
+              background: #D97238
+              &:hover
+                background: #b36d1e
+            &:first-child
+              color: black
+              background: #dbdbdb
+              &:hover
+                background: #c7c7c7
