@@ -133,6 +133,19 @@ const Cars = () => {
     }
   };
 
+  const deleteCar = async (id) => {
+    try {
+      const response = await axios.delete(`${APP_ROUTES.URL}/car/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("@token")}`,
+        },
+      });
+      refreshData();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     refreshData();
   }, [refreshData]);
@@ -163,7 +176,7 @@ const Cars = () => {
             >
               <VisibilityIcon />
             </button>
-            <button className="deleteBtn">
+            <button className="deleteBtn" onClick={() => deleteCar(item.id)}>
               <DeleteOutlineIcon />
             </button>
           </div>
@@ -356,10 +369,7 @@ const Cars = () => {
       ) : (
         <section className="general">
           <div className="container">
-            <div
-              className="generalHeading"
-              style={{ marginBottom: 0 }}
-            >
+            <div className="generalHeading" style={{ marginBottom: 0 }}>
               <h2>Заказы</h2>
               <button onClick={() => navigate("/dashboard")}>Все заказы</button>
             </div>

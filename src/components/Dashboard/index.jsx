@@ -181,6 +181,19 @@ const Dashboard = () => {
     }
   };
 
+  const deleteRent = async (id) => {
+    try {
+      const response = await axios.delete(`${APP_ROUTES.URL}/rent/byId/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("@token")}`,
+        },
+      });
+      refreshData();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     refreshData();
   }, [refreshData]);
@@ -243,7 +256,7 @@ const Dashboard = () => {
             >
               <VisibilityIcon />
             </button>
-            <button className="deleteBtn">
+            <button className="deleteBtn" onClick={() => deleteRent(item.id)}>
               <DeleteOutlineIcon />
             </button>
           </div>
