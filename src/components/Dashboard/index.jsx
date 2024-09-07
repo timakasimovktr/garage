@@ -662,7 +662,7 @@ const Dashboard = () => {
           </form>
         </div>
       </Dialog>
-      <Header />
+      <Header setRent={setRent} refreshData={refreshData}/>
       {role === "admin" ? (
         <section className="general">
           <div className="container">
