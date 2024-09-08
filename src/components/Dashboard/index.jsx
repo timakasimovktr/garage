@@ -4,6 +4,11 @@ import { CookiesProvider, useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import "dayjs/locale/ru";
 // components
 import Header from "../Header";
 //icons
@@ -42,6 +47,7 @@ const PAYMENT_TYPE = {
 };
 
 const Dashboard = () => {
+  dayjs.locale("ru");
   const theme = useTheme();
   const navigate = useNavigate();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -369,10 +375,25 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="rightCreateRentModal">
-              <div className="modalItem">
+              <div className="modalItem datePickers">
                 <label htmlFor="">Дата аренды *</label>
-                <input required name="startDate" type="date" />
-                <input required name="endDate" type="date" />
+                <LocalizationProvider required dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Дата начала аренды"
+                    format="DD/MM/YYYY"
+                    className="datePicker"
+                    sx={{ marginBottom: "12px" }}
+                    name="startDate"
+                    required
+                  />
+                  <DatePicker
+                    label="Дата окончания аренды"
+                    format="DD/MM/YYYY"
+                    className="datePicker"
+                    name="endDate"
+                    required
+                  />
+                </LocalizationProvider>
               </div>
 
               <div className="modalItem">
@@ -535,42 +556,47 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="rightCreateRentModal">
-              <div className="modalItem">
+              <div className="modalItem datePickers">
                 <label htmlFor="">Дата аренды *</label>
-                <input
-                  required
-                  type="date"
-                  value={
-                    changeRentObj.startDate
-                      ? new Date(changeRentObj.startDate)
-                          .toISOString()
-                          .split("T")[0]
-                      : ""
-                  }
-                  onChange={(e) =>
-                    setChangeRentObj({
-                      ...changeRentObj,
-                      startDate: new Date(e.target.value).toISOString(),
-                    })
-                  }
-                />
-                <input
-                  required
-                  type="date"
-                  value={
-                    changeRentObj.endDate
-                      ? new Date(changeRentObj.endDate)
-                          .toISOString()
-                          .split("T")[0]
-                      : ""
-                  }
-                  onChange={(e) =>
-                    setChangeRentObj({
-                      ...changeRentObj,
-                      endDate: new Date(e.target.value).toISOString(),
-                    })
-                  }
-                />
+                <LocalizationProvider required dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Дата начала аренды"
+                    format="DD/MM/YYYY"
+                    className="datePicker"
+                    sx={{ marginBottom: "12px" }}
+                    name="startDate"
+                    required
+                    value={
+                      changeRentObj.startDate
+                        ? dayjs(changeRentObj.startDate)
+                        : null
+                    }
+                    onChange={(newValue) =>
+                      setChangeRentObj({
+                        ...changeRentObj,
+                        startDate: newValue ? newValue.toISOString() : null,
+                      })
+                    }
+                  />
+                  <DatePicker
+                    label="Дата окончания аренды"
+                    format="DD/MM/YYYY"
+                    className="datePicker"
+                    name="endDate"
+                    required
+                    value={
+                      changeRentObj.endDate
+                        ? dayjs(changeRentObj.endDate)
+                        : null
+                    }
+                    onChange={(newValue) =>
+                      setChangeRentObj({
+                        ...changeRentObj,
+                        endDate: newValue ? newValue.toISOString() : null,
+                      })
+                    }
+                  />
+                </LocalizationProvider>
               </div>
 
               <div className="modalItem">
@@ -662,7 +688,7 @@ const Dashboard = () => {
           </form>
         </div>
       </Dialog>
-      <Header setRent={setRent} refreshData={refreshData}/>
+      <Header setRent={setRent} refreshData={refreshData} />
       {role === "admin" ? (
         <section className="general">
           <div className="container">
