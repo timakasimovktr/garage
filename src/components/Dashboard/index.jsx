@@ -7,7 +7,12 @@ import { useTheme } from "@mui/material/styles";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import "dayjs/locale/ru";
 // components
 import Header from "../Header";
@@ -36,7 +41,6 @@ import axios from "axios";
 
 const STATUS = {
   PLEDGE: "Дал залог",
-  PENDING: "В процессе",
   PAID: "Оплачено",
   DUTY: "Долг",
 };
@@ -48,6 +52,8 @@ const PAYMENT_TYPE = {
 
 const Dashboard = () => {
   dayjs.locale("ru");
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
   const theme = useTheme();
   const navigate = useNavigate();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -63,6 +69,12 @@ const Dashboard = () => {
   const [rent, setRent] = useState([]);
   const [changeRentObj, setChangeRentObj] = useState([]);
   const [cars, setCars] = useState([]);
+
+  const daysBetween = (date1, date2) => {
+    const ONE_DAY = 1000 * 60 * 60 * 24;
+    const differenceMs = Math.abs(date1.getTime() - date2.getTime());
+    return Math.round(differenceMs / ONE_DAY);
+  };
 
   const fetchData = useCallback(async (url, setter) => {
     try {
@@ -87,13 +99,13 @@ const Dashboard = () => {
       setSumDashboard
     );
     fetchData(`${APP_ROUTES.URL}/rent`, setRent);
-    fetchData(`${APP_ROUTES.URL}/car`, setCars);
+    fetchData(`${APP_ROUTES.URL}/car/free`, setCars);
   }, [fetchData, currentYear, currentMonth]);
 
   const createRent = async (e) => {
     e.preventDefault();
-
     const formElements = e.currentTarget.elements;
+
     const data = {
       status: formElements.status.value,
       paymentType: formElements.paymentType.value,
@@ -104,9 +116,10 @@ const Dashboard = () => {
       ],
       name: formElements.name.value,
       phoneNumber: formElements.phone.value,
-      startDate: new Date(formElements.startDate.value).toISOString(),
-      endDate: new Date(formElements.endDate.value).toISOString(),
-      guarantee: formElements.pledge.value,
+      startDate: new Date(formElements.startDate.value),
+      endDate: new Date(formElements.endDate.value),
+      guaranteeAmount: +formElements.guaranteeAmount.value,
+      guaranteeType: formElements.guaranteeType.value,
       amount: +formElements.amount.value,
       carId: +formElements.carId.value,
     };
@@ -208,67 +221,78 @@ const Dashboard = () => {
   const handleCloseChangeRentModal = () => setIsChangeRentModalOpen(false);
 
   const renderTableRows = () => {
-    return rent.map((item, index) => {
-      const car = cars.find((car) => car.id === item?.carId) || {};
+    return (
+      rent &&
+      rent?.map((item, index) => {
+        const car = cars.find((car) => car.id === item?.carId) || {};
 
-      return (
-        <div className="tableTr" key={index}>
-          <div className="tableTd">
-            <p>{item?.name}</p>
+        return (
+          <div className="tableTr" key={index}>
+            <div className="tableTd">
+              <p>{item?.name}</p>
+            </div>
+            <div className="tableTd">
+              <p>{`${car.model || ""} ${car.carNumber || ""}`}</p>
+            </div>
+            <div className="tableTd">
+              <p>{item?.amount.toLocaleString("de-DE")} uzs</p>
+            </div>
+            <div className="tableTd">
+              <p>
+                {(
+                  (item?.amount / 100) *
+                  item?.incomePersentage[1]
+                ).toLocaleString("de-DE")}{" "}
+                uzs
+              </p>
+            </div>
+            <div className="tableTd">
+              <p>{PAYMENT_TYPE[item?.paymentType] || ""}</p>
+            </div>
+            <div className="tableTd">
+              <p>
+                {new Date(item.startDate).toLocaleDateString("ru-RU", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+
+                  hour: "numeric",
+                  minute: "numeric",
+                })}
+              </p>
+            </div>
+            <div className="tableTd">
+              <p>
+                {new Date(item.endDate).toLocaleDateString("ru-RU", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+
+                  hour: "numeric",
+                  minute: "numeric",
+                })}
+              </p>
+            </div>
+            <div className="tableTd">
+              <div className={`status ${item.status}`}>
+                {STATUS[item.status]}
+              </div>
+            </div>
+            <div className="tableTd">
+              <button
+                className="changeBtn"
+                onClick={() => changeRentShowInfo(item.id)}
+              >
+                <VisibilityIcon />
+              </button>
+              <button className="deleteBtn" onClick={() => deleteRent(item.id)}>
+                <DeleteOutlineIcon />
+              </button>
+            </div>
           </div>
-          <div className="tableTd">
-            <p>{`${car.model || ""} ${car.carNumber || ""}`}</p>
-          </div>
-          <div className="tableTd">
-            <p>{item?.amount.toLocaleString("de-DE")} uzs</p>
-          </div>
-          <div className="tableTd">
-            <p>
-              {(
-                (item?.amount / 100) *
-                item?.incomePersentage[1]
-              ).toLocaleString("de-DE")}{" "}
-              uzs
-            </p>
-          </div>
-          <div className="tableTd">
-            <p>{PAYMENT_TYPE[item?.paymentType] || ""}</p>
-          </div>
-          <div className="tableTd">
-            <p>
-              {new Date(item.startDate).toLocaleDateString("ru-RU", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
-          </div>
-          <div className="tableTd">
-            <p>
-              {new Date(item.endDate).toLocaleDateString("ru-RU", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
-          </div>
-          <div className="tableTd">
-            <div className={`status ${item.status}`}>{STATUS[item.status]}</div>
-          </div>
-          <div className="tableTd">
-            <button
-              className="changeBtn"
-              onClick={() => changeRentShowInfo(item.id)}
-            >
-              <VisibilityIcon />
-            </button>
-            <button className="deleteBtn" onClick={() => deleteRent(item.id)}>
-              <DeleteOutlineIcon />
-            </button>
-          </div>
-        </div>
-      );
-    });
+        );
+      })
+    );
   };
 
   const renderGeneralInfo = () => {
@@ -299,6 +323,14 @@ const Dashboard = () => {
           <p>
             {sumDashboard.total
               ? sumDashboard.total.toLocaleString("de-DE") + " uzs"
+              : "Данных нет"}
+          </p>
+        </div>
+        <div className="infoCol">
+          <h3 className="red">Общий долг</h3>
+          <p>
+            {sumDashboard.total
+              ? sumDashboard.duty.toLocaleString("de-DE") + " uzs"
               : "Данных нет"}
           </p>
         </div>
@@ -359,18 +391,21 @@ const Dashboard = () => {
                   name="incomePerson"
                   type="number"
                   placeholder="Шохруху (%)"
+                  min="0"
                 />
                 <input
                   required
                   name="incomeInvestor"
                   type="number"
                   placeholder="Инвестору (%)"
+                  min="0"
                 />
                 <input
                   required
                   name="incomePartner"
                   type="number"
                   placeholder="Партнеру (%)"
+                  min="0"
                 />
               </div>
             </div>
@@ -378,20 +413,22 @@ const Dashboard = () => {
               <div className="modalItem datePickers">
                 <label htmlFor="">Дата аренды *</label>
                 <LocalizationProvider required dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Дата начала аренды"
-                    format="DD/MM/YYYY"
+                  <DateTimePicker
+                    label="Дата и время начала аренды"
                     className="datePicker"
                     sx={{ marginBottom: "12px" }}
                     name="startDate"
+                    ampm={false}
                     required
+                    timezone="Asia/Tashkent"
                   />
-                  <DatePicker
-                    label="Дата окончания аренды"
-                    format="DD/MM/YYYY"
+                  <DateTimePicker
+                    label="Дата и время окончания аренды"
                     className="datePicker"
                     name="endDate"
+                    ampm={false}
                     required
+                    timezone="Asia/Tashkent"
                   />
                 </LocalizationProvider>
               </div>
@@ -404,7 +441,13 @@ const Dashboard = () => {
                   type="number"
                   placeholder="Общая сумма (сум)"
                 />
-                <select required name="paymentType" id="">
+                <input
+                  required
+                  name="guaranteeAmount"
+                  type="number"
+                  placeholder="Сумма залога (сум)"
+                />
+                <select required name="paymentType">
                   <option value="" hidden>
                     Выберите тип оплаты
                   </option>
@@ -414,7 +457,16 @@ const Dashboard = () => {
                     </option>
                   ))}
                 </select>
-                <input required name="pledge" type="" placeholder="Залог" />
+                <select required name="guaranteeType">
+                  <option value="" hidden>
+                    Выберите тип залога
+                  </option>
+                  {Object.keys(PAYMENT_TYPE).map((key) => (
+                    <option key={key} value={key}>
+                      {PAYMENT_TYPE[key]}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="modalItem">
@@ -509,7 +561,8 @@ const Dashboard = () => {
                   required
                   type="number"
                   placeholder="Шохруху (%)"
-                  value={changeRentObj?.incomePersentage?.[0] || ""}
+                  value={changeRentObj?.incomePersentage?.[0]}
+                  min="0"
                   onChange={(e) =>
                     setChangeRentObj({
                       ...changeRentObj,
@@ -525,7 +578,8 @@ const Dashboard = () => {
                   required
                   type="number"
                   placeholder="Инвестору (%)"
-                  value={changeRentObj?.incomePersentage?.[1] || ""}
+                  value={changeRentObj?.incomePersentage?.[1]}
+                  min="0"
                   onChange={(e) =>
                     setChangeRentObj({
                       ...changeRentObj,
@@ -541,7 +595,8 @@ const Dashboard = () => {
                   required
                   type="number"
                   placeholder="Партнеру (%)"
-                  value={changeRentObj?.incomePersentage?.[2] || ""}
+                  value={changeRentObj?.incomePersentage?.[2]}
+                  min="0"
                   onChange={(e) =>
                     setChangeRentObj({
                       ...changeRentObj,
@@ -554,17 +609,33 @@ const Dashboard = () => {
                   }
                 />
               </div>
+              <div className="modalItem">
+                <label
+                  htmlFor=""
+                  style={{
+                    fontSize: "16px",
+                  }}
+                >
+                  Время аренды "
+                  {daysBetween(
+                    new Date(changeRentObj.startDate),
+                    new Date(changeRentObj.endDate)
+                  )}
+                  " суток
+                </label>
+              </div>
             </div>
             <div className="rightCreateRentModal">
               <div className="modalItem datePickers">
                 <label htmlFor="">Дата аренды *</label>
                 <LocalizationProvider required dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Дата начала аренды"
-                    format="DD/MM/YYYY"
+                  <DateTimePicker
+                    label="Дата и время начала аренды"
                     className="datePicker"
                     sx={{ marginBottom: "12px" }}
                     name="startDate"
+                    ampm={false}
+                    timezone="Asia/Tashkent"
                     required
                     value={
                       changeRentObj.startDate
@@ -578,11 +649,12 @@ const Dashboard = () => {
                       })
                     }
                   />
-                  <DatePicker
-                    label="Дата окончания аренды"
-                    format="DD/MM/YYYY"
+                  <DateTimePicker
+                    label="Дата и время окончания аренды"
                     className="datePicker"
                     name="endDate"
+                    ampm={false}
+                    timezone="Asia/Tashkent"
                     required
                     value={
                       changeRentObj.endDate
@@ -613,6 +685,18 @@ const Dashboard = () => {
                     })
                   }
                 />
+                <input
+                  required
+                  type="number"
+                  placeholder="Сумма залога (сум)"
+                  value={changeRentObj.guaranteeAmount}
+                  onChange={(e) =>
+                    setChangeRentObj({
+                      ...changeRentObj,
+                      guaranteeAmount: +e.target.value,
+                    })
+                  }
+                />
                 <select
                   required
                   name=""
@@ -634,18 +718,27 @@ const Dashboard = () => {
                     </option>
                   ))}
                 </select>
-                <input
+                <select
                   required
-                  type=""
-                  placeholder="Залог"
-                  value={changeRentObj.guarantee}
+                  name=""
+                  id=""
+                  value={changeRentObj.guaranteeType}
                   onChange={(e) =>
                     setChangeRentObj({
                       ...changeRentObj,
-                      guarantee: e.target.value,
+                      guaranteeType: e.target.value,
                     })
                   }
-                />
+                >
+                  <option value="" hidden>
+                    Выберите тип залога
+                  </option>
+                  {Object.keys(PAYMENT_TYPE).map((key) => (
+                    <option key={key} value={key}>
+                      {PAYMENT_TYPE[key]}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="modalItem">
@@ -739,11 +832,11 @@ const Dashboard = () => {
               </div>
               <div className="tableThItem">
                 <CalendarMonthIcon />
-                <p>Дата аренды</p>
+                <p>Дата и время аренды</p>
               </div>
               <div className="tableThItem">
                 <EventNoteIcon />
-                <p>Дата сдачи</p>
+                <p>Дата и время сдачи</p>
               </div>
               <div className="tableThItem">
                 <AssessmentOutlinedIcon />

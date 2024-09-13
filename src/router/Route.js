@@ -1,5 +1,5 @@
 export const APP_ROUTES = {
-  URL: 'https://garage-admin.uz/api',
+  URL: 'http://213.230.71.82:3000',
   LOGIN: '/login',
   DASHBORAD: '/dashboard',
   CARS: '/cars',

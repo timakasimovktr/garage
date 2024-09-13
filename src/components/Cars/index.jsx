@@ -68,7 +68,7 @@ const Cars = () => {
       `${APP_ROUTES.URL}/monitoring/sum/${currentYear}/${currentMonth}`,
       setSumDashboard
     );
-    fetchData(`${APP_ROUTES.URL}/car`, setCars);
+    fetchData(`${APP_ROUTES.URL}/car/free`, setCars);
   }, [fetchData, currentYear, currentMonth]);
 
   const createCar = async (e) => {
@@ -79,7 +79,7 @@ const Cars = () => {
       owner: formElements.owner.value,
       model: formElements.model.value,
       carNumber: formElements.carNumber.value,
-      run: +formElements.run.value,
+      run: formElements.run.value,
     };
 
     try {
@@ -97,7 +97,7 @@ const Cars = () => {
 
   const getCarById = async (id) => {
     try {
-      const response = await axios.get(`${APP_ROUTES.URL}/car/${id}`, {
+      const response = await axios.get(`${APP_ROUTES.URL}/car/findOne/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("@token")}`,
         },
@@ -118,7 +118,7 @@ const Cars = () => {
 
     try {
       const response = await axios.patch(
-        `${APP_ROUTES.URL}/car/${changeCarObj.id}`,
+        `${APP_ROUTES.URL}/car/findOne/${changeCarObj.id}`,
         changeCarObj,
         {
           headers: {
@@ -135,7 +135,7 @@ const Cars = () => {
 
   const deleteCar = async (id) => {
     try {
-      const response = await axios.delete(`${APP_ROUTES.URL}/car/${id}`, {
+      const response = await axios.delete(`${APP_ROUTES.URL}/car/findOne/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("@token")}`,
         },

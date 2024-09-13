@@ -213,8 +213,8 @@ const Monitoring = (props) => {
               <h3>Поступление:</h3>
               <p>
                 +
-                {history?.total?.[type]?.income?.toLocaleString("de-DE") + " uzs" ||
-                  "Данных нет"}
+                {history?.total?.[type]?.income?.toLocaleString("de-DE") +
+                  " uzs" || "Данных нет"}
               </p>
             </div>
           )}
@@ -222,8 +222,8 @@ const Monitoring = (props) => {
             <h3>Расход:</h3>
             <p>
               -
-              {history?.total?.[type]?.outcome?.toLocaleString("de-DE") + " uzs" ||
-                "Данных нет"}
+              {history?.total?.[type]?.outcome?.toLocaleString("de-DE") +
+                " uzs" || "Данных нет"}
             </p>
           </div>
         </div>
@@ -387,6 +387,14 @@ const Monitoring = (props) => {
                     <p>
                       {sum?.total?.toLocaleString("de-DE") + " uzs" ||
                         "Данных нет"}
+                    </p>
+                  </div>
+                  <div className="infoCol">
+                    <h3 className="red">Общий долг</h3>
+                    <p>
+                      {sum.total
+                        ? sum.duty.toLocaleString("de-DE") + " uzs"
+                        : "Данных нет"}
                     </p>
                   </div>
                 </>
