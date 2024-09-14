@@ -69,6 +69,7 @@ const Dashboard = () => {
   const [rent, setRent] = useState([]);
   const [changeRentObj, setChangeRentObj] = useState([]);
   const [cars, setCars] = useState([]);
+  const [activeCars, setActiveCars] = useState([]);
 
   const daysBetween = (date1, date2) => {
     const ONE_DAY = 1000 * 60 * 60 * 24;
@@ -99,7 +100,8 @@ const Dashboard = () => {
       setSumDashboard
     );
     fetchData(`${APP_ROUTES.URL}/rent`, setRent);
-    fetchData(`${APP_ROUTES.URL}/car/free`, setCars);
+    fetchData(`${APP_ROUTES.URL}/car`, setCars);
+    fetchData(`${APP_ROUTES.URL}/car/free`, setActiveCars);
   }, [fetchData, currentYear, currentMonth]);
 
   const createRent = async (e) => {
@@ -376,7 +378,7 @@ const Dashboard = () => {
                   <option value="" hidden>
                     Выбрать машину
                   </option>
-                  {cars.map((car) => (
+                  {activeCars.map((car) => (
                     <option key={car.id} value={car.id}>
                       {`${car.model} ${car.carNumber}`}
                     </option>
@@ -441,12 +443,6 @@ const Dashboard = () => {
                   type="number"
                   placeholder="Общая сумма (сум)"
                 />
-                <input
-                  required
-                  name="guaranteeAmount"
-                  type="number"
-                  placeholder="Сумма залога (сум)"
-                />
                 <select required name="paymentType">
                   <option value="" hidden>
                     Выберите тип оплаты
@@ -457,6 +453,16 @@ const Dashboard = () => {
                     </option>
                   ))}
                 </select>
+              </div>
+
+              <div className="modalItem">
+                <label htmlFor="">Залог *</label>
+                <input
+                  required
+                  name="guaranteeAmount"
+                  type="number"
+                  placeholder="Сумма залога (сум)"
+                />
                 <select required name="guaranteeType">
                   <option value="" hidden>
                     Выберите тип залога
@@ -685,18 +691,6 @@ const Dashboard = () => {
                     })
                   }
                 />
-                <input
-                  required
-                  type="number"
-                  placeholder="Сумма залога (сум)"
-                  value={changeRentObj.guaranteeAmount}
-                  onChange={(e) =>
-                    setChangeRentObj({
-                      ...changeRentObj,
-                      guaranteeAmount: +e.target.value,
-                    })
-                  }
-                />
                 <select
                   required
                   name=""
@@ -718,6 +712,22 @@ const Dashboard = () => {
                     </option>
                   ))}
                 </select>
+              </div>
+
+              <div className="modalItem">
+                <label htmlFor="">Залог *</label>
+                <input
+                  required
+                  type="number"
+                  placeholder="Сумма залога (сум)"
+                  value={changeRentObj.guaranteeAmount}
+                  onChange={(e) =>
+                    setChangeRentObj({
+                      ...changeRentObj,
+                      guaranteeAmount: +e.target.value,
+                    })
+                  }
+                />
                 <select
                   required
                   name=""
