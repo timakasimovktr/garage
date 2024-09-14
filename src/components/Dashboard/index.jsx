@@ -547,7 +547,7 @@ const Dashboard = () => {
                   onChange={(e) =>
                     setChangeRentObj({
                       ...changeRentObj,
-                      carId: e.target.value,
+                      carId: +e.target.value,
                     })
                   }
                 >
