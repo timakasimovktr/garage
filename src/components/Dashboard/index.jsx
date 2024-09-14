@@ -540,6 +540,7 @@ const Dashboard = () => {
                 <label htmlFor="">Машина *</label>
                 <select
                   required
+                  disabled
                   name=""
                   id=""
                   value={changeRentObj.carId}
