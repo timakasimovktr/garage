@@ -68,7 +68,7 @@ const Cars = () => {
       `${APP_ROUTES.URL}/monitoring/sum/${currentYear}/${currentMonth}`,
       setSumDashboard
     );
-    fetchData(`${APP_ROUTES.URL}/car/free`, setCars);
+    fetchData(`${APP_ROUTES.URL}/car`, setCars);
   }, [fetchData, currentYear, currentMonth]);
 
   const createCar = async (e) => {
