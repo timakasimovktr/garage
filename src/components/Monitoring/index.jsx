@@ -390,10 +390,20 @@ const Monitoring = (props) => {
                     </p>
                   </div>
                   <div className="infoCol">
-                    <h3 className="red">Общий долг</h3>
+                    <h3 className="red">Долг наличными</h3>
                     <p>
-                      {sum.total
-                        ? sum.duty.toLocaleString("de-DE") + " uzs"
+                      {sum.cash_duty
+                        ? sum.cash_duty.toLocaleString("de-DE") +
+                          " uzs"
+                        : "Данных нет"}
+                    </p>
+                  </div>
+                  <div className="infoCol">
+                    <h3 className="orange">Долг по карте</h3>
+                    <p>
+                      {sum.card_duty
+                        ? sum.card_duty.toLocaleString("de-DE") +
+                          " uzs"
                         : "Данных нет"}
                     </p>
                   </div>

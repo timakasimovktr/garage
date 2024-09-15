@@ -216,6 +216,22 @@ const Cars = () => {
               : "Данных нет"}
           </p>
         </div>
+        <div className="infoCol">
+          <h3 className="red">Долг наличными</h3>
+          <p>
+            {sumDashboard.cash_duty
+              ? sumDashboard.cash_duty.toLocaleString("de-DE") + " uzs"
+              : "Данных нет"}
+          </p>
+        </div>
+        <div className="infoCol">
+          <h3 className="orange">Долг по карте</h3>
+          <p>
+            {sumDashboard.card_duty
+              ? sumDashboard.card_duty.toLocaleString("de-DE") + " uzs"
+              : "Данных нет"}
+          </p>
+        </div>
       </>
     ) : (
       <>
