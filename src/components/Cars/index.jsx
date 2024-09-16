@@ -217,18 +217,26 @@ const Cars = () => {
           </p>
         </div>
         <div className="infoCol">
-          <h3 className="red">Долг наличными</h3>
+          <h3 className="red">Залог наличными</h3>
           <p>
-            {sumDashboard.cash_duty
-              ? sumDashboard.cash_duty.toLocaleString("de-DE") + " uzs"
+            {sumDashboard.cash_pledge
+              ? sumDashboard.cash_pledge.toLocaleString("de-DE") + " uzs"
               : "Данных нет"}
           </p>
         </div>
         <div className="infoCol">
-          <h3 className="orange">Долг по карте</h3>
+          <h3 className="orange">Залог по карте</h3>
           <p>
-            {sumDashboard.card_duty
-              ? sumDashboard.card_duty.toLocaleString("de-DE") + " uzs"
+            {sumDashboard.card_pledge
+              ? sumDashboard.card_pledge.toLocaleString("de-DE") + " uzs"
+              : "Данных нет"}
+          </p>
+        </div>
+        <div className="infoCol">
+          <h3 className="orange">Общий долг</h3>
+          <p>
+            {sumDashboard.duty
+              ? sumDashboard.duty.toLocaleString("de-DE") + " uzs"
               : "Данных нет"}
           </p>
         </div>
