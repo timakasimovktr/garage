@@ -32,7 +32,8 @@ const Header = (props) => {
   return (
     <header>
       <div className="container">
-        <img src={Logo} alt="Logo" />
+        {/* <img src={Logo} alt="Logo" /> */}
+        <div></div>
 
         <div className="searchAndMonitoring">
           {window.location.pathname === "/dashboard" && (

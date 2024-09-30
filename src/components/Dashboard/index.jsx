@@ -308,7 +308,7 @@ const Dashboard = () => {
           <h3 className="green">Месячный доход</h3>
           <p>
             {sumDashboard.income
-              ? sumDashboard.income.toLocaleString("de-DE") + " uzs"
+              ? sumDashboard.rentIncome.toLocaleString("de-DE") + " uzs"
               : "Данных нет"}
           </p>
         </div>
@@ -323,8 +323,8 @@ const Dashboard = () => {
         <div className="infoCol">
           <h3 className="blue">Месячная касса</h3>
           <p>
-            {sumDashboard.total
-              ? sumDashboard.total.toLocaleString("de-DE") + " uzs"
+            {sumDashboard.rentIncome || sumDashboard.income
+              ? ( sumDashboard.rentIncome + sumDashboard.income).toLocaleString("de-DE") + " uzs"
               : "Данных нет"}
           </p>
         </div>
