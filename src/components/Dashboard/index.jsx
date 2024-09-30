@@ -313,7 +313,7 @@ const Dashboard = () => {
           </p>
         </div>
         <div className="infoCol">
-          <h3 className="blue">Месячный расход</h3>
+          <h3 className="red">Месячный расход</h3>
           <p>
             {sumDashboard.outcome
               ? sumDashboard.outcome.toLocaleString("de-DE") + " uzs"
